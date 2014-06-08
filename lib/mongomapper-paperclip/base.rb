@@ -18,7 +18,6 @@ module MMPaperclip
 
   module ClassMethods
     def has_mm_attached_file(field, options = {})
-
       unless self.ancestors.include?(::Paperclip)
         include ::Paperclip
         include ::Paperclip::Glue
@@ -60,6 +59,15 @@ module MongoMapper
 end
 
 module Paperclip
+  class HasAttachedFile
+    def add_active_record_callbacks
+      name = @name
+      @klass.send(:after_save) { send(name).send(:save) }
+      @klass.send(:before_destroy) { send(name).send(:queue_all_for_delete) }
+      @klass.send(:after_destroy) { send(name).send(:flush_deletes) }
+    end
+  end
+
   class Attachment
     def updated_at
       time = instance_read(:updated_at)
