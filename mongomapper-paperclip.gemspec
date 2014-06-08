@@ -14,6 +14,5 @@ Gem::Specification.new do |gem|
   gem.name          = "mongomapper-paperclip"
   gem.require_paths = ["lib"]
   gem.version       = Mongomapper::Paperclip::VERSION
-  gem.add_dependency 'paperclip', '~> 3.4.1'
   gem.add_development_dependency 'rake'
 end
